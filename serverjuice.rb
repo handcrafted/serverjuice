@@ -102,11 +102,11 @@ gem install $RDOC $RI redcloth tinder json rake tzinfo bluecloth god thin vlad
 
 # Install Nginx
 cd /usr/local/src
-wget http://sysoev.ru/nginx/nginx-0.6.31.tar.gz
-tar xzvf nginx-0.6.31.tar.gz
+wget http://sysoev.ru/nginx/nginx-0.6.32.tar.gz
+tar xzvf nginx-0.6.32.tar.gz
 # If you want to live on the edge and get the latest nginx-upstream-fair, then use:
 git clone git://github.com/gnosek/nginx-upstream-fair.git
-cd nginx-0.6.31
+cd nginx-0.6.32
 ./configure --sbin-path=/usr/sbin/nginx --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-http_ssl_module --add-module=/usr/local/src/nginx-upstream-fair --with-http_stub_status_module
 make
 make install

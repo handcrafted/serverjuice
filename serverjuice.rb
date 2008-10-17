@@ -36,6 +36,10 @@ EOF
 #
 # linode.com - Ubuntu 8.04 LTS
 #
+# More info:
+#
+# http://github.com/sansdev/serverjuice
+#
 
 # Configure your desired options here
 DESIRED_HOSTNAME="#{hostname}"

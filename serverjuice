@@ -1,18 +1,58 @@
 #!/usr/bin/env ruby
+#
 # Tool for setting up a newly created Ubuntu 8.04 VPS for production use with
 # Ruby on Rails, Passenger, Apache 2, MySQL
+#
+# http://github.com/sansdev/serverjuice
+#
+
+require 'getoptlong'
 
 require File.join(File.dirname($0), 'serverjuice')
 
 SCRIPT_NAME = "serverjuice"
 
 def print_usage
-  puts "Usage: #{SCRIPT_NAME} <desired hostname>"
+  puts <<EOS
+Usage: #{SCRIPT_NAME} [OPTION] HOSTNAME
+
+HOSTNAME: The desired hostname for the target server.
+
+-d, --deploy SERVER    run the script directly on the given server
+-h, --help             show help
+EOS
 end
 
-if $*.size != 1
+opts = GetoptLong.new(
+  [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+  [ '--deploy', '-d', GetoptLong::REQUIRED_ARGUMENT ]
+)
+
+begin
+  target_server = nil
+  opts.each do |opt, arg|
+    case opt
+    when '--help'
+      print_usage
+      exit 0
+    when '--deploy'
+      target_server = arg
+    end
+  end
+rescue
+end
+
+if ARGV.size != 1 || opts.error?
+  puts "#{$0}: no hostname specified" unless opts.error?
   print_usage
   exit 1
 end
 
-puts ServerJuice.new(SCRIPT_NAME, nil, $*[0]).generate
+desired_hostname = ARGV.shift
+
+juicer = ServerJuice.new(SCRIPT_NAME, target_server, desired_hostname)
+if target_server
+  juicer.deploy
+else
+  puts juicer.generate
+end

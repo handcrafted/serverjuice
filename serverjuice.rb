@@ -98,7 +98,7 @@ gem install $RDOC $RI rails
 gem install $RDOC $RI mysql
 
 # Install other Gems
-gem install $RDOC $RI redcloth tinder json rake tzinfo bluecloth god thin vlad
+gem install $RDOC $RI RedCloth tinder json rake tzinfo BlueCloth god thin vlad
 
 # Install Nginx
 cd /usr/local/src
@@ -119,6 +119,10 @@ cd sphinx-0.9.8
 ./configure
 make
 make install
+
+# Install thin
+thin install
+/usr/sbin/update-rc.d -f thin defaults
     EOF
   end
 end

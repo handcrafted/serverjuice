@@ -1,0 +1,19 @@
+This is a little mini tool to assist with the initial configuration of an
+Ubuntu 8.04 VPS for Rails deployment using Passenger, Apache 2 and MySQL.
+
+It has been tested on a linode.com VPS with their Ubuntu 8.04 distribution.
+
+To use it, first clone the git repository:
+
+  git clone git://github.com/sansdev/serverjuice.git
+
+Then run the command with the hostname you wish to configure your VPS as:
+
+  serverjuice/serverjuice totallyninja >serverjuice.sh
+
+The tool simply generates a shell script on standard out. The easiest way to
+use the output is to collect it into a file and copy it to your blank server
+where you would run it as root.
+
+I wrote this for Rails Rumble 2008 to save me some time on server setup.
+There is a lot more that this script could do, but for now this is all I need.

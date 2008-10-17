@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# Tool for setting up a newly created Ubuntu 8.04 VPS for production use with
+# Ruby on Rails, Passenger, Apache 2, MySQL
+
+require File.join(File.dirname($0), 'serverjuice')
+
+SCRIPT_NAME = "serverjuice"
+
+def print_usage
+  puts "Usage: #{SCRIPT_NAME} <desired hostname>"
+end
+
+if $*.size != 1
+  print_usage
+  exit 1
+end
+
+puts ServerJuice.new(SCRIPT_NAME, nil, $*[0]).generate

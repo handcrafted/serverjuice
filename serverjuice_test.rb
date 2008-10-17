@@ -18,10 +18,7 @@ class ServerJuiceTest < Test::Unit::TestCase
 
       @generated = @script.split(/\n\n/).chomp_last!
 
-      @header, @configuration, @require_hostname, @set_hostname, @upgrade_system_packages,
-      @install_essential_tools, @install_apache2, @install_mysql_server, @install_git,
-      @install_core_ruby, @install_ruby_mysql, @install_rubygems, @install_rails,
-      @install_passenger = <<EOS.split(/\n\n/).chomp_last!
+      @expected = <<EOS.split(/\n\n/).chomp_last!
 # test_juicer.sh:
 #
 # Set up a clean Ubuntu 8.04 install for Rails production deployment.
@@ -70,9 +67,6 @@ apt-get -y install git-core
 # Install Core Ruby
 apt-get -y install ruby-full
 
-# Install Ruby MySQL driver
-apt-get -y install libmysql-ruby1.8
-
 # Install RubyGems
 (
 RUBYGEMS=rubygems-1.3.0 &&
@@ -91,6 +85,9 @@ rm -rf $RUBYGEMS $RUBYGEMS.tgz
 # Install Rails
 gem install $RDOC $RI rails
 
+# Install MySQL Ruby driver
+gem install $RDOC $RI mysql
+
 # Install and setup Passenger
 gem install $RDOC $RI passenger
 (echo; echo) | passenger-install-apache2-module
@@ -103,21 +100,10 @@ apache2ctl graceful
 EOS
     end
 
-    should "contain expected sections" do
-      assert_equal @header, @generated.shift
-      assert_equal @configuration, @generated.shift
-      assert_equal @require_hostname, @generated.shift
-      assert_equal @set_hostname, @generated.shift
-      assert_equal @upgrade_system_packages, @generated.shift
-      assert_equal @install_essential_tools, @generated.shift
-      assert_equal @install_apache2, @generated.shift
-      assert_equal @install_mysql_server, @generated.shift
-      assert_equal @install_git, @generated.shift
-      assert_equal @install_core_ruby, @generated.shift
-      assert_equal @install_ruby_mysql, @generated.shift
-      assert_equal @install_rubygems, @generated.shift
-      assert_equal @install_rails, @generated.shift
-      assert_equal @install_passenger, @generated.shift
+    should "contain the expected sections" do
+      @expected.each_with_index do |section, i|
+        assert_equal section, @generated[i]
+      end
     end
   end
 end 

@@ -76,9 +76,6 @@ apt-get -y install git-core
 # Install Core Ruby
 apt-get -y install ruby-full
 
-# Install Ruby MySQL driver
-apt-get -y install libmysql-ruby1.8
-
 # Install RubyGems
 (
 RUBYGEMS=rubygems-1.3.0 &&
@@ -96,6 +93,9 @@ rm -rf $RUBYGEMS $RUBYGEMS.tgz
 
 # Install Rails
 gem install $RDOC $RI rails
+
+# Install MySQL Ruby driver
+gem install $RDOC $RI mysql
 
 # Install and setup Passenger
 gem install $RDOC $RI passenger

@@ -62,10 +62,10 @@ apt-get -y update
 apt-get -y upgrade
 
 # Install essential tools
-apt-get -y install build-essential wget
+apt-get -y install build-essential wget screen imagemagick
 
-# Install Apache 2
-apt-get -y install apache2 apache2-prefork-dev
+# Install tools for Nginx
+apt-get -y install libpcre3-dev libpcre3 openssl libssl-dev nginx
 
 # Install MySQL Server
 apt-get -y install mysql-server mysql-client libmysqlclient15-dev
@@ -97,15 +97,28 @@ gem install $RDOC $RI rails
 # Install MySQL Ruby driver
 gem install $RDOC $RI mysql
 
-# Install and setup Passenger
-gem install $RDOC $RI passenger
-(echo; echo) | passenger-install-apache2-module
-cat >/etc/apache2/conf.d/passenger <<EOP
-LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3/ext/apache2/mod_passenger.so
-PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3
-PassengerRuby /usr/bin/ruby1.8
-EOP
-apache2ctl graceful
+# Install other Gems
+gem install $RDOC $RI redcloth tinder json rake tzinfo bluecloth god thin vlad
+
+# Install Nginx
+cd /usr/local/src
+wget http://sysoev.ru/nginx/nginx-0.6.31.tar.gz
+tar xzvf nginx-0.6.31.tar.gz
+# If you want to live on the edge and get the latest nginx-upstream-fair, then use:
+git clone git://github.com/gnosek/nginx-upstream-fair.git
+cd nginx-0.6.31
+./configure --sbin-path=/usr/sbin/nginx --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-http_ssl_module --add-module=/usr/local/src/nginx-upstream-fair --with-http_stub_status_module
+make
+make install
+
+# Install Sphinx
+cd /usr/local/src/
+wget http://www.sphinxsearch.com/downloads/sphinx-0.9.8.tar.gz
+tar -zxvf sphinx-0.9.8.tar.gz
+cd sphinx-0.9.8
+./configure
+make
+make install
     EOF
   end
 end
